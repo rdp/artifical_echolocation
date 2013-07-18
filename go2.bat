@@ -2,8 +2,8 @@
 @rem also need to setup openal config first...
 
 @rem create spatial file of click, no z-axis for now
-footsteps.exe %1 %2 0 tick.raw
+footsteps.exe %1 %2 %3 tick.raw
 @rem pad with initial silence
 call sox output.wav output_longer.wav pad %2 0
-call cp -- output_longer.wav %1_%2.wav
-echo created %1_%2.wav
+call cp -- output_longer.wav %1_%2_%3.wav
+echo created %1_%2_%3.wav
