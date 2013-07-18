@@ -48,7 +48,7 @@ void randWalk( float *a ){
 int main( int argc, char *argv[] ){
    /* current position and where to walk to... start just 1m ahead */
    if(argc != 5) {
-     printf("syntax %s x y z footsteps.raw (x y z in meters I think?)", argv[0]);
+     printf("syntax is: %s x y z filename.raw (x y z in meters I think?)", argv[0]);
      exit(1);
    }
    float curr[3] = {atof(argv[1]), atof(argv[2]), atof(argv[3])};
@@ -67,24 +67,36 @@ int main( int argc, char *argv[] ){
 
    /* this will be the source sound */
    ALuint source;
+   ALuint source2;
    alGenSources( 1, &source );
    alSourcef( source, AL_PITCH, 1. );
    alSourcef( source, AL_GAIN, 1. );
    alSource3f( source, AL_POSITION, curr[0],curr[1],curr[2] ); // hard coded position
    alSource3f( source, AL_VELOCITY, 0.,0.,0. );
+   
+   alGenSources( 1, &source2 );
+   alSourcef( source2, AL_PITCH, 1. );
+   alSourcef( source2, AL_GAIN, 1. );
+   alSource3f( source2, AL_POSITION, -curr[0], curr[1], curr[2] );
+   alSource3f( source2, AL_VELOCITY, 0.,0.,0. );
+   
    // alSourcei( source, AL_LOOPING, AL_TRUE );
 
    /* allocate an OpenAL buffer and fill it with monaural sample data */
    ALuint buffer;
+   ALuint buffer2;
    alGenBuffers( 1, &buffer );
+   alGenBuffers( 1, &buffer2 );
    {
       long dataSize;
       const ALvoid* data = load( argv[4], &dataSize );
       /* for simplicity, assume raw file is signed-16b at 44.1kHz */
       alBufferData( buffer, AL_FORMAT_MONO16, data, dataSize, 44100 );
+      alBufferData( buffer2, AL_FORMAT_MONO16, data, dataSize, 44100 );
       free( (void*)data );
    }
    alSourcei( source, AL_BUFFER, buffer );
+   alSourcei( source2, AL_BUFFER, buffer2 );
 
    /* state initializations for the upcoming loop */
    srand( (int)time(NULL) );
@@ -92,13 +104,14 @@ int main( int argc, char *argv[] ){
 
    /** BEGIN! **/
    alSourcePlay( source );
+   alSourcePlay( source2 );
 
    fflush( stderr ); /* in case OpenAL reported an error earlier */
    
    ALint sourceState = AL_PLAYING;
    while(sourceState == AL_PLAYING) {
      usleep(3);
-     alGetSourcei(source, AL_SOURCE_STATE, &sourceState);
+     alGetSourcei(source2, AL_SOURCE_STATE, &sourceState);
    }
     
    /* cleanup that should be done when you have a proper exit... ;) */
