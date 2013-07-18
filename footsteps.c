@@ -48,7 +48,7 @@ void randWalk( float *a ){
 int main( int argc, char *argv[] ){
    /* current position and where to walk to... start just 1m ahead */
    if(argc != 5) {
-     printf("syntax %s x y z footsteps.raw (x y z in meters I think?)", argv[0]);
+     printf("syntax %s x y z filename.raw (x y z in meters I think?)", argv[0]);
      exit(1);
    }
    float curr[3] = {atof(argv[1]), atof(argv[2]), atof(argv[3])};
