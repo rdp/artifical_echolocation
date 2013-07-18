@@ -59,9 +59,10 @@ int main( int argc, char *argv[] ){
    ALCcontext* context = alcCreateContext( device, contextAttr );
    alcMakeContextCurrent( context );
 
-   /* listener at origin, facing down -z (ears at 1.5m height) */
-   alListener3f( AL_POSITION, 0., 1.5, 0. );
+   /* listener at origin, facing down -z (ears at at 0m height) */
+   alListener3f( AL_POSITION, 0., 0, 0. );
    alListener3f( AL_VELOCITY, 0., 0., 0. );
+   //  This is said to be listener facing into the screen
    float orient[6] = { /*fwd:*/ 0., 0., -1., /*up:*/ 0., 1., 0. };
    alListenerfv( AL_ORIENTATION, orient );
 
@@ -70,9 +71,9 @@ int main( int argc, char *argv[] ){
    alGenSources( 1, &source );
    alSourcef( source, AL_PITCH, 1. );
    alSourcef( source, AL_GAIN, 1. );
-   alSource3f( source, AL_POSITION, curr[0],curr[1],curr[2] ); // hard coded position
+   alSource3f( source, AL_POSITION, curr[0],curr[1],curr[2] );
    alSource3f( source, AL_VELOCITY, 0.,0.,0. );
-   // alSourcei( source, AL_LOOPING, AL_TRUE );
+   // alSourcei( source, AL_LOOPING, AL_TRUE ); // don't loop...
 
    /* allocate an OpenAL buffer and fill it with monaural sample data */
    ALuint buffer;
