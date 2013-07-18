@@ -4,9 +4,9 @@ all = []
 ENV['PATH'] = ENV['PATH'] + ';.' # allow it to execute go2.bat locally [yikes]
 
 figure_x = [[-1, 1], [-1, 3.1], [0, 2], [2, 1.1], [2,3]]
-
 slant = [[-1, 1], [0, 2], [2,3]]
-name="slant"
+
+name="figure_x"
 
 for x, y in eval(name) do
   z = 0
